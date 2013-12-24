@@ -45,8 +45,11 @@ for i = 1:a
         Q =[temp(1:i-1),temp(i+1:length(temp))];
     end
     Q = [Q,1]; %add constant 1
-    sprintf('this is matrix inv Q\n');
+    %
+    fprintf('this is matrix inv Q--------------------\n');
     inv(Q'*Q)
+    fprintf('end-------------------------------------\n');
+    %
     Alpha = inv(Q'*Q)*Q'*R;
     X = [X,Alpha];
 end

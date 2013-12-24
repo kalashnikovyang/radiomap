@@ -25,7 +25,7 @@ for k = 1:location_num
     %diag elements equals to Rss
     Rss_target_cal_begin = diag(matrix_begin);    
     if k == 1
-        old_begin = sum((Rss_target_cal_begin - Rss_target).^2) 
+        old_begin = sum((Rss_target_cal_begin - Rss_target).^2); 
         begin_best = 1;
     else
         new_begin = sum((Rss_target_cal_begin - Rss_target).^2);
@@ -42,10 +42,10 @@ for k = 1:location_num
     %diag elements equals to Rss
     Rss_target_cal_update = diag(matrix_update);
     if k == 1
-        old_update = sum((Rss_target_cal_begin - Rss_target).^2) 
+        old_update = sum((Rss_target_cal_update - Rss_target).^2);
         update_best = 1;
     else
-        new_update = sum((Rss_target_cal_begin - Rss_target).^2);
+        new_update = sum((Rss_target_cal_update - Rss_target).^2);
         if new_update < old_update
             update_best = k;
             old_update = new_update;
@@ -53,14 +53,16 @@ for k = 1:location_num
     end
 end
 
-%transfer location into [x,y]
-[x1,y1] = location_transfer(begin_best,120,80);
-[x2,y2] = location_transfer(update_best,120,80);
+%transfer location into 2-D [x,y]
+[x1,y1] = number_transfer(begin_best,120,80);
+[x2,y2] = number_transfer(update_best,120,80);
 x3=target(1);
 y3=target(2);
 
+%
 figure;
 plot(x1,y1,'go',x2,y2,'rx',x3,y3,'b+');
+%}
 
 a=[x1,y1];
 b=[x2,y2];

@@ -80,7 +80,11 @@ for i=1:1:col
     for j=1:1:row
         for m=1:1:M
             dis=sqrt(((i-0.5)*GridSize-RssBeaconCoordinates(m,1))^2+((j-0.5)*GridSize-RssBeaconCoordinates(m,2))^2);
-            Dis_location(m,i+(j-1)*col)=dis;
+            %Dis_location(m,i+(j-1)*col)=dis;
+            %transfer 2D into number
+            num = location_transfer(i,j,col,row);
+            Dis_location(m,num)=dis;
+            %Dis_location(m,(i-1)*row+j)=dis;
         end
     end
 end
@@ -121,5 +125,26 @@ for i=1:M
     end
 end
 %-----------------------------------------------------------        
+
+%by a short time, get alpha(X_begin) for location with R_li and Q_li
+T_train = 10;
+X_begin = zeros(M,M*N);
+for i=1:M
+    Q_i = [];
+    %get matrix Q for beacon i until time T_train
+    Q_i = Get_Qi(Dis,i,T_train);
+    for l=1:N
+        R_li = [];
+        %get a time sequence R_li
+        for t=1:T_train
+            temp = PropModel(Dis_location(i,l));
+            R_li = [R_li;temp];
+        end
+        % cal matrix alpha
+        alpha = [];
+        alpha = inv(Q_i'*Q_i)*Q_i'*R_li;
+        X_begin(:,l*i) = alpha;
+    end
+end
 
 save beacon_setup.mat
