@@ -71,7 +71,7 @@ for t=1:T_run %system running
                         if k==i || k==j
                             
                         else
-                            rss = [rss, PropModel(Rss(i,k))];
+                            rss = [rss, PropModel(Dis(i,k))];
                         end
                     end
                     rss = [rss, 1];
