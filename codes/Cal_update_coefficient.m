@@ -42,7 +42,7 @@ for i = 1:row
                 alpha_new(k,b) = alpha_new(k,b) + temp;
             end
         end
-        X(:,i*l) = alpha_new; %replace with updated column
+        X(:,(l-1)*M+i) = alpha_new; %replace with updated column
         %disp('haha');
     end
 end

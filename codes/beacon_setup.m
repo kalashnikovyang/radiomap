@@ -143,7 +143,7 @@ for i=1:M
         % cal matrix alpha
         alpha = [];
         alpha = inv(Q_i'*Q_i)*Q_i'*R_li;
-        X_begin(:,l*i) = alpha;
+        X_begin(:,(l-1)*M+i) = alpha;
     end
 end
 
