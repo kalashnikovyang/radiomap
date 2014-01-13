@@ -1,4 +1,5 @@
-function flag = Compute_location(X_begin,X_update,target,Rss_target,Rss)
+%function flag = Compute_location(X_begin,X_update,target,Rss_target,Rss)
+function [x1,y1,x2,y2,x3,y3] = Compute_location(X_begin,X_update,target,Rss_target,Rss)
 
 %X_begin: coefficients at time t=1
 %X_update: updated coefficients at current time
@@ -8,6 +9,7 @@ function flag = Compute_location(X_begin,X_update,target,Rss_target,Rss)
 %Rss: rss between beacons, M*M vector
 
 %flag: return 1 if track by update is better
+%2D location returns begin, update, true location
 
 [row,col]=size(X_begin); %10*96000, row: beacon num, col: location*beacon num
 location_num = col/row;
@@ -59,10 +61,10 @@ end
 x3=target(1);
 y3=target(2);
 
-%
+%{
 figure;
 plot(x1,y1,'go',x2,y2,'rx',x3,y3,'b+');
-%}
+
 
 a=[x1,y1];
 b=[x2,y2];
@@ -74,7 +76,7 @@ if d > e
 else
     flag = 0;
 end
-
+%}
 
 
 

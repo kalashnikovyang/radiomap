@@ -24,7 +24,7 @@ GridSize=1;
 Area=[120, 80];
 pt=150;
 p0=10;
-pvar=2;
+pvar=0;
 R=25;
 Delta = 0.2;
 T=1000; 
@@ -56,7 +56,7 @@ plot(RssBeaconCoordinates(:,1), RssBeaconCoordinates(:,2),'ro','linewidth',2);
 axis([0,Area(1),0,Area(2)]);
 
 Map_beacon = zeros(M*(M-1)/2 ,T); % record RSS between beacons
-Map = zeros(M, N, T); % record RSS between beacons and locations
+%Map = zeros(M, N, T); % record RSS between beacons and locations
 
 col=Area(1)/GridSize;
 row=Area(2)/GridSize;
@@ -94,6 +94,8 @@ Y_offline = []; %Y_offline stores the offline training coefficients, i*j th row 
 %-----------------------------------------------------------
 %Puzzle: each iteration re-calculate Dis(i,j)??????
 %-----------------------------------------------------------
+Compute_accuracy_linear_regression = [];
+Compute_error = [];
 for i=1:M
     for j=1:M       
         %calculate A_ij
@@ -118,6 +120,14 @@ for i=1:M
         Y_ij = inv(A_ij'*A_ij)*A_ij'*Q_ij;  
         %store all offline coefficients in Y_offline, i*jth row represents
         %Y_ij
+        %
+        %----------test-----------
+        %compute accuracy for linear regression
+        [flag,error] = test_compute_accuracy(A_ij*Y_ij, Q_ij, i, j);
+        Compute_accuracy_linear_regression = [Compute_accuracy_linear_regression;flag];
+        Compute_error = [Compute_error; error];
+        %----------test-----------
+        %}
         if i==j
             Y_ij =zeros(9,1);
         end
@@ -125,7 +135,11 @@ for i=1:M
     end
 end
 %-----------------------------------------------------------        
-
+figure;
+subplot(1,2,1);plot(Compute_accuracy_linear_regression);
+title('Compute accuracy for linear regression');
+subplot(1,2,2);plot(Compute_error);
+title('Compute error for linear regression');
 %by a short time, get alpha(X_begin) for location with R_li and Q_li
 T_train = 10;
 X_begin = zeros(M,M*N);
